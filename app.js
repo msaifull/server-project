@@ -5,6 +5,13 @@ const path = require('path');
 
 
 const usersRouter = require('./app/api/v1/users/router');
+const authRouter = require('./app/api/v1/auth/router');
+const categoriesRouter = require('./app/api/v1/categories/router');
+
+//middlewares
+const notFoundMiddleware = require('./app/middlewares/not-found');
+const handleErrorMiddleware = require('./app/middlewares/handler-error');
+
 
 const app = express();
 
@@ -20,5 +27,12 @@ app.get('/', (req, res)=>{
     res.json({ message: "welcome to api semina"})
 });
 app.use(`${versionV1}`, usersRouter);
+app.use(`${versionV1}/auth`, authRouter);
+app.use(`${versionV1}/categories`, categoriesRouter);
+
+
+//middleware
+app.use(notFoundMiddleware);
+app.use(handleErrorMiddleware)
 
 module.exports = app;
